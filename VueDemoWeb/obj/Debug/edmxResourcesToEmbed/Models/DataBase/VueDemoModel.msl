@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="VueDemoDBModelStoreContainer" CdmEntityContainer="VueDemoDBEntities">
+    <EntitySetMapping Name="OneWeekData">
+      <EntityTypeMapping TypeName="VueDemoDBModel.OneWeekData">
+        <MappingFragment StoreEntitySet="OneWeekData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+          <ScalarProperty Name="ForecastStartDate" ColumnName="ForecastStartDate" />
+          <ScalarProperty Name="ForecastEndDate" ColumnName="ForecastEndDate" />
+          <ScalarProperty Name="AvgTemperature" ColumnName="AvgTemperature" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThreeDayData">
+      <EntityTypeMapping TypeName="VueDemoDBModel.ThreeDayData">
+        <MappingFragment StoreEntitySet="ThreeDayData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+          <ScalarProperty Name="ForecastDate" ColumnName="ForecastDate" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
