@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="VueDemoDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="OneWeekData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountryCode" Type="varchar" MaxLength="10" />
+    <Property Name="AreaName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ForecastStartDate" Type="datetime" />
+    <Property Name="ForecastEndDate" Type="datetime" />
+    <Property Name="AvgTemperature" Type="nvarchar" MaxLength="250" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ThreeDayData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountryCode" Type="varchar" MaxLength="10" />
+    <Property Name="AreaName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ForecastDate" Type="datetime" />
+    <Property Name="Temperature" Type="nvarchar" MaxLength="250" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityContainer Name="VueDemoDBModelStoreContainer">
+    <EntitySet Name="OneWeekData" EntityType="Self.OneWeekData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ThreeDayData" EntityType="Self.ThreeDayData" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
