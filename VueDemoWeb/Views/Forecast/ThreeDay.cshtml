@@ -1,0 +1,142 @@
+﻿@*未來3天天氣預報共用View*@
+@{
+    ViewBag.Title = TempData["Temp_VueDemoTitle"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .center_top {
+        text-align:center;
+        vertical-align:top;
+    }
+</style>
+
+<div id="app-1">
+    <table>
+        <tr>
+            <td class="center_top">未來3天天氣預報</td>
+            <td class="center_top">請選擇要儲存的區域溫度資料</td>
+        </tr>
+        <tr>
+            <td>
+                <ol>
+                    <template v-for="location in locations">
+                        <span style="font-weight:bold;">{{ location.locationName }}：</span>
+                        <table border="1">
+                            <tr>
+                                <template v-for="weatherElement in location.weatherElement" style="list-style-type: none;">
+                                    <td>{{ weatherElement.description }}</td>
+                                    <td>
+                                        <template v-for="times in weatherElement">
+                                            <template v-for="item in times">
+                                                <table>
+                                                    <tr>
+                                                        <td style="width:180px;">{{ item.dataTime }}</td>
+                                                        <td>
+                                                            <template v-for="eValue in item.elementValue">
+                                                                {{ eValue.value }}
+                                                                {{ eValue.measures }}
+                                                            </template>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </template>
+                                        </template>
+                                    </td>
+
+                                </template>
+                            </tr>
+                        </table>
+
+                    </template>
+                </ol>
+            </td>
+
+            <td class="center_top">
+                <select id="dd1">
+                    <template v-for="location in locations">
+                        <option>{{ location.locationName }}</option>
+                    </template>
+                </select>
+                <input type="button" value="儲存" id="btnSave" onclick="confirm('是否確定要儲存')" />
+            </td>
+        </tr>
+    </table>
+
+    
+</div>
+
+<script>
+    var strUrl = '@(TempData["Temp_VueDemoUrl"].ToString())';
+    strUrl = strUrl.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, "\"").replace(/&apos;/g, "'");
+
+    var app = new Vue({
+        el: '#app-1',
+        data() {
+            return {
+        locations: null,
+
+    }
+    },
+        //呼叫
+        mounted() {
+            axios.get(strUrl)
+                 .then(response => (this.locations = response.data.records.locations[0].location))
+    }
+    })
+
+    $(function() {
+        var listAry = [];
+
+        $('#btnSave').click(function() {
+            var countryCode = '@(TempData["Temp_VueDemoCountry"])';//台灣城市代碼
+            var cText = $('#dd1 option:selected').text();//下拉選單選擇的區域
+
+            var ttText = '';
+            $("span:contains('" + cText + "')").next('table').find('table').each(function() {
+                var td1 = $(this).find('td')[0];
+                var td2 = $(this).find('td')[1];
+
+                var td1Text = $(td1).text(); //預報時間
+                var td2Text = $(td2).text(); //溫度
+
+                if(td1Text != '' && td2Text != '') {
+
+                    //ttText += td1Text + ',' + td2Text;
+
+                    listAry.push({
+                        'CountryCode': countryCode, 
+                        'AreaName': cText, 
+                        'ForecastDate': td1Text,
+                        'Temperature': td2Text, 
+                        'CreateDate': new Date()
+                    });
+                }
+            });
+
+            console.log(listAry);
+
+            $.ajax({
+                url: '@Url.Action("ThreeDaySave", "Forecast")',
+                type: "POST",
+                data: JSON.stringify({ list : listAry }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    //alert("Nothing");
+                },
+                success: function (count) {
+                    var iCount = parseInt(count);
+                    var msg = '儲存失敗';
+                    if(iCount > 0){
+                        msg = '儲存成功';
+                    }
+                    alert(msg);
+                }
+            });
+
+            console.log(ttText);
+        });
+    });
+</script>
+
